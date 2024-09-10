@@ -44,6 +44,8 @@ int FileFormat::rawSamplesAcross() const {
   case Value::HGT30:      return 3601;
   case Value::THREEDEP_1M:  return 10012;
   case Value::LIDAR: return 10000;
+  case Value::TIF10: return 10812;
+  case Value::BIL25: return 4453;
   default:
     // In particular, fail on GLO, because this number is variable with latitude.
     LOG(ERROR) << "Couldn't compute tile size of unknown file format";
@@ -66,6 +68,8 @@ int FileFormat::inMemorySamplesAcross() const {
   case Value::FABDEM:
     return 3601;
   case Value::LIDAR: return 10000;
+  case Value::TIF10: return 10801;
+  case Value::BIL25: return 4453;
   default:
     LOG(ERROR) << "Couldn't compute tile size of unknown file format";
     exit(1);
@@ -82,6 +86,9 @@ double FileFormat::degreesAcross() const {
   case Value::NED19:      return 0.25;
   case Value::HGT:    // fall through
   case Value::HGT30:
+  case Value::TIF10: 
+  return 1.0;
+
     return 1.0;
   case Value::GLO30:  // Fall through
   case Value::FABDEM:
@@ -91,6 +98,7 @@ double FileFormat::degreesAcross() const {
     // This is a misnomer, as these tiles are in UTM coordinates.  The "degrees" across
     // means one x or y unit per tile (where each tile is 10000m in UTM).
     return 1.0;
+  case Value::BIL25: return 1.0;
   default:
     LOG(ERROR) << "Couldn't compute degree span of unknown file format";
     exit(1);
@@ -106,7 +114,9 @@ CoordinateSystem *FileFormat::coordinateSystemForOrigin(double lat, double lng, 
   case Value::NED13_ZIP:  // fall through
   case Value::NED13:
   case Value::NED1_ZIP:   
-  case Value::NED19:      
+  case Value::NED19: 
+  case Value::TIF10: 
+  case Value::BIL25:  
   case Value::HGT:
   case Value::HGT30:
   case Value::GLO30:
@@ -150,6 +160,8 @@ FileFormat *FileFormat::fromName(const string &name) {
   const std::map<string, FileFormat> fileFormatNames = {
     { "SRTM",      Value::HGT, },
     { "SRTM30",    Value::HGT30, },
+	{ "IECA",    Value::TIF10, },
+	{ "IGN",    Value::BIL25, },
     { "NED1-ZIP",  Value::NED1_ZIP, },
     { "NED13",     Value::NED13, },
     { "NED13-ZIP", Value::NED13_ZIP, },

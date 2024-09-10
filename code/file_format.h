@@ -44,6 +44,8 @@ public:
     GLO30,  // Copernicus GLO-30 30m data
     FABDEM, // Tree-free Copernicus GLO-30 30m data
     LIDAR,  // FLT file converted from LIDAR, 0.1 arcsecond
+	TIF10, // IECA (10m de resolucion)
+	BIL25, // IGN (25m de resolucion)
   };
 
   FileFormat() = default;

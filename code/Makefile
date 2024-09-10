@@ -57,6 +57,9 @@ LOADERLIB_OBJS = \
 	$(OUTDIR)/flt_loader.o \
 	$(OUTDIR)/glo_loader.o \
 	$(OUTDIR)/hgt_loader.o \
+	$(OUTDIR)/tif10_loader.o \
+	$(OUTDIR)/bil25_loader.o \
+
 
 COORDLIB_OBJS = \
 	$(OUTDIR)/coordinate_system.o \

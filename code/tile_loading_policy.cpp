@@ -28,6 +28,8 @@
 #include "flt_loader.h"
 #include "glo_loader.h"
 #include "hgt_loader.h"
+#include "tif10_loader.h"
+#include "bil25_loader.h"
 #include "tile_cache.h"
 #include "easylogging++.h"
 
@@ -78,6 +80,8 @@ Tile *BasicTileLoadingPolicy::loadTile(double minLat, double minLng) const {
     switch (mFileFormat.value()) {
     case FileFormat::Value::HGT:  // Fall through
     case FileFormat::Value::HGT30:
+	case FileFormat::Value::TIF10:
+	case FileFormat::Value::BIL25:
     case FileFormat::Value::NED19:
     case FileFormat::Value::NED13:
     case FileFormat::Value::NED13_ZIP:
@@ -118,9 +122,15 @@ Tile *BasicTileLoadingPolicy::loadInternal(double minLat, double minLng) const {
   switch (mFileFormat.value()) {
   case FileFormat::Value::HGT:
   case FileFormat::Value::HGT30:
+
     loader = new HgtLoader(mFileFormat);
     break;
-
+  case FileFormat::Value::TIF10:
+	loader = new TIF10Loader();
+	break;
+  case FileFormat::Value::BIL25:
+	loader = new BIL25Loader();
+	break;
   case FileFormat::Value::NED13_ZIP:  // fall through
   case FileFormat::Value::NED13:
   case FileFormat::Value::NED19:
